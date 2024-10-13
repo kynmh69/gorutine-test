@@ -27,6 +27,7 @@ func Updater() {
 	wg.Wait()
 	logger.Infoln("stop the updater")
 	logger.Infof("exit program: %d", counter)
+	logger.Infof("exit program2: %d", counter2)
 }
 
 func updateToken(wg *sync.WaitGroup, quit chan struct{}) {
@@ -52,16 +53,16 @@ func updateToken2(wg *sync.WaitGroup, quit chan struct{}) {
 	wg.Add(1)
 	defer wg.Done()
 	logger := logging.GetLogger()
-	logger.Infoln("update the token")
+	logger.Infoln("update the token2")
 	ticker := time.NewTicker(3 * time.Second)
 	defer ticker.Stop()
 	for {
 		select {
 		case <-ticker.C:
 			counter2++
-			logger.Infof("update the token %d times", counter2)
+			logger.Infof("update the token2 %d times", counter2)
 		case <-quit:
-			logger.Infoln("quit the updater")
+			logger.Infoln("quit the updater2")
 			return
 		}
 	}
