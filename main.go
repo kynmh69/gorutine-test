@@ -6,9 +6,9 @@ import (
 )
 
 func init() {
-	// init logger
 	logging.InitLogger()
 }
+
 func main() {
 	app.Updater()
 }

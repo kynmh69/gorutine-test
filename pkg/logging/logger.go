@@ -1,6 +1,9 @@
 package logging
 
-import "go.uber.org/zap"
+import (
+	"go.uber.org/zap"
+	"log"
+)
 
 var logger *zap.SugaredLogger
 
@@ -9,13 +12,17 @@ func InitLogger() {
 	if logger != nil {
 		return
 	}
-	l, _ := zap.NewDevelopment()
+	l, err := zap.NewDevelopment()
+	if err != nil {
+		log.Panicln("failed to init logger", err)
+	}
 	logger = l.Sugar()
 }
 
 func GetLogger() *zap.SugaredLogger {
 	if logger == nil {
-		panic("logger is not initialized")
+		log.Println("logger is not initialized")
+		InitLogger()
 	}
 	return logger
 }

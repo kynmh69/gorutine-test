@@ -5,6 +5,7 @@ import (
 	"os"
 	"os/signal"
 	"sync"
+	"syscall"
 	"time"
 )
 
@@ -19,12 +20,12 @@ func Updater() {
 	wg.Add(1)
 	go updateToken(&wg, quit)
 	c := make(chan os.Signal, 1)
-	signal.Notify(c)
+	signal.Notify(c, os.Interrupt, syscall.SIGTERM)
 	<-c
 	close(quit)
 	wg.Wait()
 	logger.Infoln("stop the updater")
-	logger.Infof("exit program: %d\n", counter)
+	logger.Infof("exit program: %d", counter)
 }
 
 func updateToken(wg *sync.WaitGroup, quit chan struct{}) {
@@ -37,7 +38,7 @@ func updateToken(wg *sync.WaitGroup, quit chan struct{}) {
 		select {
 		case <-ticker.C:
 			counter++
-			logger.Infof("update the token %d times\n", counter)
+			logger.Infof("update the token %d times", counter)
 		case <-quit:
 			logger.Infoln("quit the updater")
 			return
