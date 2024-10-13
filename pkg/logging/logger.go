@@ -14,5 +14,8 @@ func InitLogger() {
 }
 
 func GetLogger() *zap.SugaredLogger {
+	if logger == nil {
+		panic("logger is not initialized")
+	}
 	return logger
 }
