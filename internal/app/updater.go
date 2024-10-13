@@ -18,6 +18,7 @@ func Updater() {
 	logger := logging.GetLogger()
 	logger.Infoln("start the updater")
 	go updateToken(&wg, quit)
+	go updateToken2(&wg, quit)
 	c := make(chan os.Signal, 1)
 	signal.Notify(c, os.Interrupt, syscall.SIGTERM)
 	<-c
