@@ -10,6 +10,7 @@ import (
 )
 
 var counter int
+var counter2 int
 
 func Updater() {
 	// update the app
@@ -57,7 +58,7 @@ func updateToken2(wg *sync.WaitGroup, quit chan struct{}) {
 	for {
 		select {
 		case <-ticker.C:
-			counter++
+			counter2++
 			logger.Infof("update the token %d times", counter)
 		case <-quit:
 			logger.Infoln("quit the updater")
