@@ -59,7 +59,7 @@ func updateToken2(wg *sync.WaitGroup, quit chan struct{}) {
 		select {
 		case <-ticker.C:
 			counter2++
-			logger.Infof("update the token %d times", counter)
+			logger.Infof("update the token %d times", counter2)
 		case <-quit:
 			logger.Infoln("quit the updater")
 			return
