@@ -17,7 +17,6 @@ func Updater() {
 	quit := make(chan struct{})
 	logger := logging.GetLogger()
 	logger.Infoln("start the updater")
-	wg.Add(1)
 	go updateToken(&wg, quit)
 	c := make(chan os.Signal, 1)
 	signal.Notify(c, os.Interrupt, syscall.SIGTERM)
@@ -29,10 +28,30 @@ func Updater() {
 }
 
 func updateToken(wg *sync.WaitGroup, quit chan struct{}) {
+	wg.Add(1)
 	defer wg.Done()
 	logger := logging.GetLogger()
 	logger.Infoln("update the token")
 	ticker := time.NewTicker(5 * time.Second)
+	defer ticker.Stop()
+	for {
+		select {
+		case <-ticker.C:
+			counter++
+			logger.Infof("update the token %d times", counter)
+		case <-quit:
+			logger.Infoln("quit the updater")
+			return
+		}
+	}
+}
+
+func updateToken2(wg *sync.WaitGroup, quit chan struct{}) {
+	wg.Add(1)
+	defer wg.Done()
+	logger := logging.GetLogger()
+	logger.Infoln("update the token")
+	ticker := time.NewTicker(3 * time.Second)
 	defer ticker.Stop()
 	for {
 		select {
